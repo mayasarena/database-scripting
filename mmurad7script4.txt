@@ -1,0 +1,34 @@
+-- deletions/views
+
+SHOW DATABASES;
+USE mmurad7assign2db;
+
+-- showing data in all tables
+SELECT * FROM customer;
+SELECT * FROM agent;
+SELECT * FROM product;
+SELECT * FROM purchased;
+
+-- creating a view
+CREATE VIEW candp AS SELECT customer.firstname, customer.lastname, product.description, purchased.quantity, product.cost, (purchased.quantity * product.cost) AS totalcost FROM product LEFT JOIN purchased ON purchased.productid = product.productid RIGHT JOIN customer ON customer.customerid = purchased.customerid ORDER BY customer.lastname;
+
+-- showing data in the view
+SELECT * FROM candp;
+
+-- selecting all rows from view where customers spent over 100 dollars
+SELECT * FROM candp WHERE totalcost > 100;
+
+-- deleting the product that i created
+SELECT * FROM product;
+DELETE FROM product WHERE description = "Skateboard";
+
+-- showing remaining products in product table
+SELECT * FROM product;
+
+-- attempting to delete agents who work in springfield
+SELECT * FROM agent;
+DELETE FROM agent WHERE city = "Springfield";
+SELECT * FROM agent;
+-- this row containing agentid 99 was not deleted because the agentid is referenced 
+-- in the customer table and there are existing customers who have this agent dealing with them
+

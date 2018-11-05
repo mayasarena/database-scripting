@@ -1,0 +1,51 @@
+-- queries
+
+SHOW DATABASES;
+USE mmurad7assign2db;
+
+-- query 1
+SELECT description FROM product;
+
+-- query2
+SELECT DISTINCT city FROM customer;
+
+-- query 3
+SELECT * FROM agent ORDER BY city;
+
+-- query 4
+SELECT firstname, lastname FROM customer WHERE city = "Springfield";
+
+-- query 5
+SELECT lastname FROM customer WHERE agentid IN (SELECT agentid FROM agent WHERE firstname = "Regis");
+
+-- query 6
+SELECT description FROM product WHERE description LIKE "%pad%" OR "%Pad%";
+
+-- query 7
+SELECT customer.lastname, product.description, purchased.quantity FROM customer, product, purchased WHERE customer.customerid = purchased.customerid AND purchased.productid = product.productid;
+
+-- query 8
+SELECT SUM(quantity) AS "Homer's Total Purchases" FROM purchased WHERE customerid IN (SELECT customerid FROM customer WHERE firstname = "Homer");
+
+-- query 9
+SELECT customer.firstname, customer.lastname, SUM(quantity) FROM customer, purchased WHERE customer.customerid = purchased.customerid GROUP BY firstname;
+
+-- query 10
+SELECT description, quantity FROM product WHERE productid NOT IN (SELECT productid FROM purchased);
+
+-- query 11
+SELECT description, quantity FROM product WHERE productid NOT IN (SELECT productid FROM purchased WHERE customerid IN (SELECT customerid FROM customer WHERE firstname = "Fred" AND lastname = "Flintstone"));
+
+-- query 12
+SELECT customer.firstname AS 'customer firstname', customer.lastname AS 'customer lastname', agent.firstname AS 'agent firstname', agent.lastname AS 'agent lastname'  FROM customer, agent WHERE customer.city = agent.city;
+
+-- query 13
+SELECT SUM(quantity) AS 'Total # of Knee Pads Purchased' FROM purchased WHERE productid IN (SELECT productid FROM product WHERE description = "Knee Pads");
+
+-- query 14
+SELECT description FROM product WHERE productid IN (SELECT productid FROM (SELECT productid FROM purchased GROUP BY productid HAVING COUNT(productid) > 3) as t);
+
+-- query 15
+SELECT firstname, lastname FROM agent WHERE agentid IN (SELECT agentid FROM customer WHERE customerid IN (SELECT customerid FROM purchased WHERE productid IN (SELECT productid FROM product WHERE description = "Knee Pads")));
+
+
